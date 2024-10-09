@@ -14,7 +14,7 @@ class Individual_Image:
             self.triangles = []
         else:
             self.triangles = triangles
-            
+
         self.fitness_score = fitness_score
         self.dimensions = dimensions
     
@@ -39,5 +39,5 @@ class Individual_Image:
             canvas.alpha_composite(triangle_overlay)
 
         if save:
-            canvas.save(f"{str(id(self))}.png")
+            canvas.save(f"output/{str(id(self))}.png")
         return canvas
