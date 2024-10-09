@@ -7,16 +7,29 @@ class Individual_Image:
     def __init__(
         self,
         dimensions: Tuple[int, int] = None,
-        triangles: list[Triangle] = [],
+        triangles: list[Triangle] = None,
         fitness_score=None,
     ):
-        self.triangles = triangles
+        if triangles == None:
+            self.triangles = []
+        else:
+            self.triangles = triangles
+            
         self.fitness_score = fitness_score
         self.dimensions = dimensions
+    
+    
+    def random_populate(self, triangle_count):
+        for i in range(triangle_count):
+            new_triangle = Triangle()
+            new_triangle.random_initialize(self.dimensions)
+
+            self.triangles.append(new_triangle)
+
 
     def render(
         self, save: bool = False
-    ):  # TODO: Are the opacities non-uniform for some reason?
+    ):
         canvas = Image.new("RGBA", self.dimensions, (255, 255, 255, 255))
 
         for current_triangle in self.triangles:
