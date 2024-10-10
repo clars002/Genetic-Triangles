@@ -10,9 +10,9 @@ from triangles_arbitrator import TriangleArtArbitrator
 
 start_time = time.time()
 
-triangle_count = 50
-individual_count = 50
-generation_count = 50
+triangle_count = 16
+individual_count = 16
+generation_count = 128
 
 ref_image = Image.open("images/pika_32.png")
 full_dimensions = ref_image.size

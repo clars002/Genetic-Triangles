@@ -6,6 +6,7 @@ import random
 import itertools
 from triangle import Triangle
 from typing import Tuple
+import numpy as np
 
 class TriangleArtArbitrator(Arbitrator):
     def __init__(self, reference_image: Image):
@@ -38,10 +39,14 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             total_fitness += self.assess_fitness(individual)
 
-        for individual in population:
-            weights.append(1 / (individual.fitness_score / total_fitness)) # invert because higher fitness_score = less fit
+        weights = [1 / (ind.fitness_score / total_fitness) for ind in population]
+        normalized_weights = [w / sum(weights) for w in weights]
 
-        selection = random.choices(population, weights, k=selection_size)
+        np_selection = np.random.choice(population, size=selection_size, replace=False, p=normalized_weights)
+
+        for choice in np_selection:
+            selection.append(choice)
+            choice.render(True)
 
         return selection
 
@@ -71,7 +76,7 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             for triangle in individual.triangles:
                 check = random.random()
-                if check < (1 / 10):
+                if check < (1 / 50):
                     self.mutate_triangle(triangle, dimensions)
 
     def mutate_triangle(self, triangle: Triangle, bounds: Tuple[int, int]):
