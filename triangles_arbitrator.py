@@ -46,7 +46,6 @@ class TriangleArtArbitrator(Arbitrator):
 
         for choice in np_selection:
             selection.append(choice)
-            choice.render(True)
 
         return selection
 
@@ -76,7 +75,7 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             for triangle in individual.triangles:
                 check = random.random()
-                if check < (1 / 50):
+                if check < (1 / 16):
                     self.mutate_triangle(triangle, dimensions)
 
     def mutate_triangle(self, triangle: Triangle, bounds: Tuple[int, int]):
