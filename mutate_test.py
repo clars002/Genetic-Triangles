@@ -10,21 +10,29 @@ from triangles_arbitrator import TriangleArtArbitrator
 
 start_time = time.time()
 
-triangle_count = 32
-individual_count = 32
+triangle_count = 6
+individual_count = 50
+generation_count = 100
+
+population = []
 
 ref_image = Image.open("images/pika_32.png")
 full_dimensions = ref_image.size
 
 the_arbitrator = TriangleArtArbitrator(ref_image)
-population = []
 
-for i in range(individual_count):
-    new_individual = Individual_Image(full_dimensions)
-    new_individual.random_populate(triangle_count)
-    population.append(new_individual)
+base = Individual_Image(full_dimensions)
+base.random_populate(triangle_count)
 
+population.append(base)
 
+base_render = base.render()
+base_render.save("Base.png")
+
+the_arbitrator.mutate(population)
+
+mutate_render = base.render()
+mutate_render.save("Mutated.png")
 
 end_time = time.time()
 runtime = end_time - start_time

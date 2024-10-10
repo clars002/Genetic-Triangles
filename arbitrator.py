@@ -8,5 +8,5 @@ class Arbitrator:
     def crossover(individual_1, individual_2):
         raise NotImplementedError("This is abstract class Arbitrator")
 
-    def mutate(individual):
+    def mutate(population):
         raise NotImplementedError("This is abstract class Arbitrator")
