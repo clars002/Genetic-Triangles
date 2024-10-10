@@ -12,7 +12,7 @@ start_time = time.time()
 
 triangle_count = 32
 individual_count = 128
-generation_count = 6000
+generation_count = 512
 
 ref_image = Image.open("images/pika_32.png")
 full_dimensions = ref_image.size

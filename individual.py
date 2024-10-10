@@ -1,6 +1,8 @@
-from triangle import Triangle
-from PIL import Image, ImageDraw
 from typing import Tuple
+
+from PIL import Image, ImageDraw
+
+from triangle import Triangle
 
 
 class Individual_Image:
@@ -17,8 +19,7 @@ class Individual_Image:
 
         self.fitness_score = fitness_score
         self.dimensions = dimensions
-    
-    
+
     def random_populate(self, triangle_count):
         for i in range(triangle_count):
             new_triangle = Triangle()
@@ -26,10 +27,7 @@ class Individual_Image:
 
             self.triangles.append(new_triangle)
 
-
-    def render(
-        self, save: bool = False
-    ):
+    def render(self, save: bool = False):
         canvas = Image.new("RGBA", self.dimensions, (255, 255, 255, 255))
 
         for current_triangle in self.triangles:
