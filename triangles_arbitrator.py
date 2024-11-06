@@ -51,7 +51,6 @@ class TriangleArtArbitrator(Arbitrator):
         for choice in np_selection:
             selection.append(choice)
 
-
         best_score = None
         best_individual = None
         total_fitness = 0
@@ -64,7 +63,7 @@ class TriangleArtArbitrator(Arbitrator):
                 best_individual = individual
 
         average_fitness = total_fitness / selection_size
-            
+
         best_individual.render(True)
         print(f"Best fitness: {best_score}")
         print(f"Average fitness: {average_fitness}")
