@@ -12,10 +12,19 @@ from triangle import Triangle
 
 
 class TriangleArtArbitrator(Arbitrator):
+    """
+    'Arbitrator' for the triangle class; performs individual and population
+    operations (assessing fitness, selection, crossover, mutation)
+    """
+
     def __init__(self, reference_image: Image):
         self.reference_image = reference_image
 
     def assess_fitness(self, individual: Individual_Image):
+        """
+        Compares each pixel from the reference image with each pixel from the individual
+        to assess that individual's fitness
+        """
 
         score = 0
 

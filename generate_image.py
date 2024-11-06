@@ -9,6 +9,9 @@ from triangles_arbitrator import TriangleArtArbitrator
 
 
 def main():
+    """
+    Main driver to coordinate genetic algorithm execution
+    """
     triangle_count = 32
     individual_count = 64
     generation_count = 100000
