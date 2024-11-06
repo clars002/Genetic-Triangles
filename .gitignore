@@ -163,3 +163,8 @@ cython_debug/
 
 # My weird stuff
 *.blah
+
+# Output images
+output/*.png
+output/*.jpg
+output/*.jpeg
