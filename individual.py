@@ -6,6 +6,11 @@ from triangle import Triangle
 
 
 class Individual_Image:
+    """
+    A single individual in the population, comprised of an assortment of triangles
+    spanning the region defined by the image's dimensions.
+    """
+
     def __init__(
         self,
         dimensions: Tuple[int, int] = None,
@@ -21,6 +26,9 @@ class Individual_Image:
         self.dimensions = dimensions
 
     def random_populate(self, triangle_count):
+        """
+        Populate the image with a random assortment of triangles
+        """
         for i in range(triangle_count):
             new_triangle = Triangle()
             new_triangle.random_initialize(self.dimensions)
@@ -28,6 +36,10 @@ class Individual_Image:
             self.triangles.append(new_triangle)
 
     def render(self, save: bool = False):
+        """
+        Generate an image from this individual's assortment of trianges.
+        Can be outputted to the output folder as a .png optionally.
+        """
         canvas = Image.new("RGBA", self.dimensions, (255, 255, 255, 255))
 
         for current_triangle in self.triangles:

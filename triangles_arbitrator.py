@@ -43,6 +43,10 @@ class TriangleArtArbitrator(Arbitrator):
         return score
 
     def select(self, population: List[Individual_Image], selection_size):
+        """
+        Use weighted random selection to generate the next generation's population of
+        individuals from the passed population
+        """
         selection = []
         weights = []
         total_fitness = 0
@@ -50,9 +54,11 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             total_fitness += self.assess_fitness(individual)
 
+        # Invert the weight because higher fitness_score = less fit individual
         weights = [1 / (ind.fitness_score / total_fitness) for ind in population]
         normalized_weights = [w / sum(weights) for w in weights]
 
+        # Randomly select the next population (do not allow for replacement)
         np_selection = np.random.choice(
             population, size=selection_size, replace=False, p=normalized_weights
         )
@@ -60,6 +66,7 @@ class TriangleArtArbitrator(Arbitrator):
         for choice in np_selection:
             selection.append(choice)
 
+        # Calculate most fit individual in the new population:
         best_score = None
         best_individual = None
         total_fitness = 0
@@ -73,6 +80,7 @@ class TriangleArtArbitrator(Arbitrator):
 
         average_fitness = total_fitness / selection_size
 
+        # Output the best individual of the new population to the output folder
         best_individual.render(True)
         print(f"Best fitness: {best_score}")
         print(f"Average fitness: {average_fitness}")
@@ -85,6 +93,11 @@ class TriangleArtArbitrator(Arbitrator):
         parent2: Individual_Image,
         number_of_triangles: int = None,
     ):
+        """
+        Perform crossover between two parents and return the child.
+        Currently only one type of crossover, based on the first type in
+        the lecture 8 notes.
+        """
         dimensions = parent1.dimensions
         child = Individual_Image(dimensions)
 
@@ -109,6 +122,9 @@ class TriangleArtArbitrator(Arbitrator):
         number_of_triangles: int = None,
         dimensions: Tuple[int, int] = None,
     ):
+        """
+        Apply mutation randomly to the entire population.
+        """
         if number_of_triangles == None:
             number_of_triangles = len(population[0].triangles)
         if dimensions == None:
@@ -117,10 +133,14 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             for triangle in individual.triangles:
                 check = random.random()
-                if False:
+                if check > 0.95:  # 5% chance of mutation
                     self.mutate_triangle(triangle, dimensions)
 
     def mutate_triangle(self, triangle: Triangle, bounds: Tuple[int, int]):
+        """
+        Apply a random mutation to the passed triangle. Can affect shape
+        (the position of each vertex), and/or color (each R, G, and B value).
+        """
         for i in range(3):
             check = random.random()
             if check < 0.5:
@@ -146,13 +166,18 @@ class TriangleArtArbitrator(Arbitrator):
     def evolve(
         self, population: List[Individual_Image], number_of_triangles: int = None
     ):
+        """
+        Apply the genetic algorithm for one generation.
+        """
         initial_population_size = len(population)
         parent_combos = itertools.combinations(population, 2)
         children = []
 
+        # If the number of triangles per image is not passed explicitly, discern it:
         if number_of_triangles == None:
             number_of_triangles = len(population[0].triangles)
 
+        # Out of all the possible combinations of parents, 40% will bear children:
         for combo in parent_combos:
             if random.random() < 0.6:
                 children.append(self.crossover(combo[0], combo[1], number_of_triangles))
@@ -160,8 +185,10 @@ class TriangleArtArbitrator(Arbitrator):
         for child in children:
             population.append(child)
 
+        # Mutate the current pool of individuals, including parents and children
         self.mutate(population)
 
+        # Select the new population out of all parents and children in the current pool
         new_population = self.select(population, initial_population_size)
 
         return new_population

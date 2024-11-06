@@ -1,4 +1,8 @@
 class Arbitrator:
+    """
+    Abstract class which is inherited by TriangleArtArbitrator
+    """
+
     def assess_fitness(individual):
         raise NotImplementedError("This is abstract class Arbitrator")
 

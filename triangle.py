@@ -3,11 +3,18 @@ from typing import Tuple
 
 
 class Triangle:
+    """
+    All the information pertaining to a single triangle.
+    """
+
     def __init__(self, vertices=None, color=None):
         self.vertices = vertices
         self.color = color
 
     def random_initialize(self, bounds: Tuple[int, int]):
+        """
+        Initialize this triangle with random vertices and color.
+        """
         self.vertices = [None] * 3
         colors = [None] * 3
 
