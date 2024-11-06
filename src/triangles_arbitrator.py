@@ -17,8 +17,15 @@ class TriangleArtArbitrator(Arbitrator):
     operations (assessing fitness, selection, crossover, mutation)
     """
 
-    def __init__(self, reference_image: Image):
+    def __init__(
+        self,
+        reference_image: Image,
+        mutation_rate: float = 0.05,
+        crossover_rate: float = 0.4,
+    ):
         self.reference_image = reference_image
+        self.mutation_rate = mutation_rate
+        self.crossover_rate = crossover_rate
 
     def assess_fitness(self, individual: Individual_Image):
         """
@@ -133,7 +140,7 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             for triangle in individual.triangles:
                 check = random.random()
-                if check > 0.95:  # 5% chance of mutation
+                if check > (1 - self.mutation_rate):
                     self.mutate_triangle(triangle, dimensions)
 
     def mutate_triangle(self, triangle: Triangle, bounds: Tuple[int, int]):
@@ -179,7 +186,7 @@ class TriangleArtArbitrator(Arbitrator):
 
         # Out of all the possible combinations of parents, 40% will bear children:
         for combo in parent_combos:
-            if random.random() < 0.6:
+            if random.random() < (1 - self.crossover_rate):
                 children.append(self.crossover(combo[0], combo[1], number_of_triangles))
 
         for child in children:
