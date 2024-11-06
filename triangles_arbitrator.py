@@ -51,6 +51,24 @@ class TriangleArtArbitrator(Arbitrator):
         for choice in np_selection:
             selection.append(choice)
 
+
+        best_score = None
+        best_individual = None
+        total_fitness = 0
+
+        for individual in selection:
+            individual_score = individual.fitness_score
+            total_fitness += individual_score
+            if best_score == None or individual_score < best_score:
+                best_score = individual_score
+                best_individual = individual
+
+        average_fitness = total_fitness / selection_size
+            
+        best_individual.render(True)
+        print(f"Best fitness: {best_score}")
+        print(f"Average fitness: {average_fitness}")
+
         return selection
 
     def crossover(
@@ -91,7 +109,7 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             for triangle in individual.triangles:
                 check = random.random()
-                if check < (1 / 16):
+                if False:
                     self.mutate_triangle(triangle, dimensions)
 
     def mutate_triangle(self, triangle: Triangle, bounds: Tuple[int, int]):
@@ -128,7 +146,7 @@ class TriangleArtArbitrator(Arbitrator):
             number_of_triangles = len(population[0].triangles)
 
         for combo in parent_combos:
-            if random.randint(1, 10) > 4:
+            if random.random() < 0.6:
                 children.append(self.crossover(combo[0], combo[1], number_of_triangles))
 
         for child in children:

@@ -8,11 +8,11 @@ from individual import Individual_Image
 from triangle import Triangle
 from triangles_arbitrator import TriangleArtArbitrator
 
-start_time = time.time()
+# start_time = time.time()
 
 triangle_count = 32
-individual_count = 128
-generation_count = 512
+individual_count = 64
+generation_count = 100000
 
 ref_image = Image.open("images/pika_32.png")
 full_dimensions = ref_image.size
@@ -43,6 +43,7 @@ print(f"Best fitness gen 0: {best_fitness_0}")
 best_0.save("Best_initial.png")
 
 for i in range(generation_count):
+    print(f"Processing generation {i}.")
     next_generation = the_arbitrator.evolve(population, triangle_count)
     population = next_generation
 
@@ -63,6 +64,6 @@ print(f"Average fitness gen {generation_count}: {average_fitness}")
 print(f"Best fitness gen {generation_count}: {best_fitness_1}")
 best_1.save("Best_final.png")
 
-end_time = time.time()
-runtime = end_time - start_time
-print(f"Runtime: {runtime:.4f} seconds")
+# end_time = time.time()
+# runtime = end_time - start_time
+# print(f"Runtime: {runtime:.4f} seconds")
