@@ -156,7 +156,7 @@ class TriangleArtArbitrator(Arbitrator):
         for individual in population:
             for triangle in individual.triangles:
                 check = random.random()
-                if check > (1 - self.mutation_rate):
+                if check < self.mutation_rate:
                     self.mutate_triangle(triangle, dimensions)
 
     def mutate_triangle(self, triangle: Triangle, bounds: Tuple[int, int]):
@@ -202,7 +202,7 @@ class TriangleArtArbitrator(Arbitrator):
 
         # Out of all the possible combinations of parents, 40% will bear children:
         for combo in parent_combos:
-            if random.random() < (1 - self.crossover_rate):
+            if random.random() < self.crossover_rate:
                 children.append(self.crossover(combo[0], combo[1], number_of_triangles))
 
         for child in children:
