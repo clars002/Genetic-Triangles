@@ -80,7 +80,7 @@ class TriangleArtArbitrator(Arbitrator):
 
         # Randomly select the next population (do not allow for replacement)
         np_selection = np.random.choice(
-            population, size=selection_size, replace=False, p=normalized_weights
+            population, size=selection_size, replace=True, p=normalized_weights
         )
 
         for choice in np_selection:
