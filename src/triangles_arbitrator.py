@@ -23,10 +23,12 @@ class TriangleArtArbitrator(Arbitrator):
         reference_image: Image,
         mutation_rate: float = 0.05,
         crossover_rate: float = 0.4,
+        scaling_factor: int = 1,
     ):
         self.reference_image = reference_image
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
+        self.scaling_factor = scaling_factor
 
         self._generation = 0
 
@@ -52,7 +54,12 @@ class TriangleArtArbitrator(Arbitrator):
         individual.fitness_score = score
         return score
 
-    def select(self, population: List[Individual_Image], selection_size, output_best: bool = True):
+    def select(
+        self,
+        population: List[Individual_Image],
+        selection_size,
+        output_best: bool = True,
+    ):
         """
         Use weighted random selection to generate the next generation's population of
         individuals from the passed population
@@ -65,7 +72,10 @@ class TriangleArtArbitrator(Arbitrator):
             total_fitness += self.assess_fitness(individual)
 
         # Invert the weight because higher fitness_score = less fit individual
-        weights = [1 / (ind.fitness_score / total_fitness) for ind in population]
+        weights = [
+            ((1 / (ind.fitness_score / total_fitness)) ** self.scaling_factor)
+            for ind in population
+        ]
         normalized_weights = [w / sum(weights) for w in weights]
 
         # Randomly select the next population (do not allow for replacement)
