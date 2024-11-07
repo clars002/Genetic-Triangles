@@ -28,6 +28,8 @@ class TriangleArtArbitrator(Arbitrator):
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
 
+        self._generation = 0
+
     def assess_fitness(self, individual: Individual_Image):
         """
         Compares each pixel from the reference image with each pixel from the individual
@@ -50,7 +52,7 @@ class TriangleArtArbitrator(Arbitrator):
         individual.fitness_score = score
         return score
 
-    def select(self, population: List[Individual_Image], selection_size):
+    def select(self, population: List[Individual_Image], selection_size, output_best: bool = True):
         """
         Use weighted random selection to generate the next generation's population of
         individuals from the passed population
@@ -88,10 +90,13 @@ class TriangleArtArbitrator(Arbitrator):
 
         average_fitness = total_fitness / selection_size
 
-        # Output the best individual of the new population to the output folder
-        best_individual.render(True)
-        print(f"Best fitness: {best_score}")
-        print(f"Average fitness: {average_fitness}")
+        if output_best:
+            # Output the best individual of the new population to the output folder
+            filename = f"gen_{self._generation}"
+            foldername = id(self)
+            best_individual.render(True, filename, foldername)
+            print(f"Best fitness: {best_score}")
+            print(f"Average fitness: {average_fitness}")
 
         return selection
 
@@ -199,4 +204,5 @@ class TriangleArtArbitrator(Arbitrator):
         # Select the new population out of all parents and children in the current pool
         new_population = self.select(population, initial_population_size)
 
+        self._generation += 1
         return new_population

@@ -79,7 +79,6 @@ def generate_stats(population, arbitrator, args, display: bool = True):
     if display:
         print(f"Average fitness gen 0: {average_fitness}")
         print(f"Best fitness gen 0: {best_fitness}")
-        best_0.save("output/Best_initial.png")
 
     return best_fitness, individual, average_fitness
 

@@ -1,3 +1,5 @@
+import os
+from datetime import datetime
 from typing import Tuple
 
 from PIL import Image, ImageDraw
@@ -35,7 +37,7 @@ class Individual_Image:
 
             self.triangles.append(new_triangle)
 
-    def render(self, save: bool = False):
+    def render(self, save: bool = False, filename: str = None, folder: str = None):
         """
         Generate an image from this individual's assortment of trianges.
         Can be outputted to the output folder as a .png optionally.
@@ -48,6 +50,10 @@ class Individual_Image:
             triangle_artist.polygon(current_triangle.vertices, current_triangle.color)
             canvas.alpha_composite(triangle_overlay)
 
-        if save:
+        if save and filename == None:
             canvas.save(f"output/{str(id(self))}.png")
+        elif save:
+            datetime_str = datetime.now().strftime("%Y-%m-%d")
+            os.makedirs(f"output/{datetime_str}_{folder}", exist_ok=True)
+            canvas.save(f"output/{datetime_str}_{folder}/{filename}.png")
         return canvas
