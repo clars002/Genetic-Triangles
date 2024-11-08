@@ -21,7 +21,7 @@ def process_args():
     parser.add_argument(
         "--image",
         type=str,
-        default="resources/images/pika_16.png",
+        default="resources/images/bunny.png",
         help="Path to the input image file.",
     )
     parser.add_argument(
