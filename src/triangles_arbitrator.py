@@ -85,8 +85,14 @@ class TriangleArtArbitrator(Arbitrator):
             population, size=selection_size, replace=True, p=normalized_weights
         )
 
+        reselected = 0
+
         for choice in np_selection:
-            selection.append(choice)
+            if choice not in selection:
+                selection.append(choice)
+            else:
+                selection.append(copy.deepcopy(choice))
+                reselected += 1
 
         # Calculate most fit individual in the new population:
         best_score = None
@@ -106,11 +112,12 @@ class TriangleArtArbitrator(Arbitrator):
             self._generation == 1 or self._generation % self.output_interval == 0
         ):
             # Output the best individual of the new population to the output folder
-            filename = f"gen_{self._generation}"
+            filename = f"score_{best_score}_gen_{self._generation}"
             foldername = id(self)
             best_individual.render(True, filename, foldername)
             print(f"Best fitness: {best_score}")
             print(f"Average fitness: {average_fitness}")
+            print(f"Reselected {reselected} times")
 
         return selection
 
@@ -131,14 +138,16 @@ class TriangleArtArbitrator(Arbitrator):
         if number_of_triangles == None:
             number_of_triangles = len(parent1.triangles)
 
-        cutoff = random.randint(0, number_of_triangles - 1)
+        for i in range(number_of_triangles):
+            triangle_copy = None
 
-        for i in range(0, cutoff):
-            triangle_copy = copy.deepcopy(parent1.triangles[i])
-            child.triangles.append(triangle_copy)
+            coin_flip = random.random() < 0.5
 
-        for j in range(cutoff, number_of_triangles):
-            triangle_copy = copy.deepcopy(parent2.triangles[j])
+            if coin_flip:
+                triangle_copy = copy.deepcopy(parent1.triangles[i])
+            else:
+                triangle_copy = copy.deepcopy(parent2.triangles[i])
+            
             child.triangles.append(triangle_copy)
 
         return child
