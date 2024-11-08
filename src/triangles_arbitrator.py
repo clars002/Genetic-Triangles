@@ -196,11 +196,10 @@ class TriangleArtArbitrator(Arbitrator):
         parent_combos = itertools.combinations(population, 2)
         children = []
 
-        # If the number of triangles per image is not passed explicitly, discern it:
+        # If the number of triangles per image is not passed explicitly, get it manually:
         if number_of_triangles == None:
             number_of_triangles = len(population[0].triangles)
 
-        # Out of all the possible combinations of parents, 40% will bear children:
         for combo in parent_combos:
             if random.random() < self.crossover_rate:
                 children.append(self.crossover(combo[0], combo[1], number_of_triangles))

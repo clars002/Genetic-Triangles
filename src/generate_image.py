@@ -27,7 +27,7 @@ def process_args():
     parser.add_argument(
         "--triangles",
         type=int,
-        default=16,
+        default=24,
         help="Number of triangles per individual image.",
     )
     parser.add_argument(
@@ -45,26 +45,26 @@ def process_args():
     parser.add_argument(
         "--scaling_factor",
         type=int,
-        default=3,
+        default=50,
         help="Scaling factor to apply to selection; higher scaling = higher selection pressure",
     )
     parser.add_argument(
         "--mutation_rate",
         type=float,
-        default=0.03,
+        default=0.01,
         help="Portion of triangles mutated per generation on average.",
     )
     parser.add_argument(
         "--crossover_rate",
         type=float,
-        default=0.45,
+        default=0.02,
         help="Portion of parent combinations that will reproduce each generation.",
     )
     parser.add_argument(
         "--throttle",
         type=float,
         default=0,
-        help="Portion of cpu time to sleep (to throttle CPU utilization)"
+        help="Portion of cpu time to sleep (to throttle CPU utilization)",
     )
     return parser.parse_args()
 
@@ -105,7 +105,9 @@ def main():
     ref_image = Image.open(args.image)
     full_dimensions = ref_image.size
 
-    the_arbitrator = TriangleArtArbitrator(ref_image, args.mutation_rate, args.crossover_rate, args.scaling_factor)
+    the_arbitrator = TriangleArtArbitrator(
+        ref_image, args.mutation_rate, args.crossover_rate, args.scaling_factor
+    )
     population = []
 
     # Initialize population with individual_count random individuals
