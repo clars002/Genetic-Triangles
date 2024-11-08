@@ -66,6 +66,12 @@ def process_args():
         default=0,
         help="Portion of cpu time to sleep (to throttle CPU utilization)",
     )
+    parser.add_argument(
+        "--output_interval",
+        type=int,
+        default=10,
+        help="Number of generations between outputs to CLI and output folder.",
+    )
     return parser.parse_args()
 
 
@@ -106,7 +112,11 @@ def main():
     full_dimensions = ref_image.size
 
     the_arbitrator = TriangleArtArbitrator(
-        ref_image, args.mutation_rate, args.crossover_rate, args.scaling_factor
+        ref_image,
+        args.mutation_rate,
+        args.crossover_rate,
+        args.scaling_factor,
+        args.output_interval,
     )
     population = []
 
@@ -119,11 +129,14 @@ def main():
     generate_stats(population, the_arbitrator, args)
 
     for i in range(args.generations):
-        print(f"Processing generation {i}.")
         evolve_start = time.time()
+
         next_generation = the_arbitrator.evolve(population, args.triangles)
+
         evolve_duration = time.time() - evolve_start
+
         population = next_generation
+
         time.sleep(evolve_duration * args.throttle)
 
     generate_stats(population, the_arbitrator, args)

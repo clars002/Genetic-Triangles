@@ -24,11 +24,13 @@ class TriangleArtArbitrator(Arbitrator):
         mutation_rate: float = 0.05,
         crossover_rate: float = 0.4,
         scaling_factor: int = 1,
+        output_interval: int = 10,
     ):
         self.reference_image = reference_image
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
         self.scaling_factor = scaling_factor
+        self.output_interval = output_interval
 
         self._generation = 0
 
@@ -100,7 +102,9 @@ class TriangleArtArbitrator(Arbitrator):
 
         average_fitness = total_fitness / selection_size
 
-        if output_best:
+        if output_best and (
+            self._generation == 1 or self._generation % self.output_interval == 0
+        ):
             # Output the best individual of the new population to the output folder
             filename = f"gen_{self._generation}"
             foldername = id(self)
@@ -192,6 +196,11 @@ class TriangleArtArbitrator(Arbitrator):
         """
         Apply the genetic algorithm for one generation.
         """
+        self._generation += 1
+
+        if self._generation == 1 or self._generation % self.output_interval == 0:
+            print(f"Processing generation {self._generation}.")
+
         initial_population_size = len(population)
         parent_combos = itertools.combinations(population, 2)
         children = []
@@ -213,5 +222,4 @@ class TriangleArtArbitrator(Arbitrator):
         # Select the new population out of all parents and children in the current pool
         new_population = self.select(population, initial_population_size)
 
-        self._generation += 1
         return new_population
